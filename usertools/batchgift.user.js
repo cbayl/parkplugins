@@ -20,6 +20,8 @@
 // @grant        GM_setClipboard
 // @grant        GM_addStyle
 // @grant        GM.xmlHttpRequest
+// @downloadURL  https://github.com/cbayl/parkplugins/raw/main/usertools/batchgift.user.js
+// @updateURL    https://github.com/cbayl/parkplugins/raw/main/usertools/batchgift.user.js
 // ==/UserScript==
 
 (function() {
