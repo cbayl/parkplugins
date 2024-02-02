@@ -182,28 +182,28 @@
 
     // 获取剩余余额
     var account_balance=document.querySelector("body > div.content > div > div:nth-child(1) > div.gift-gold-num > span:nth-child(3)").textContent
-    // 获取包含token的form元素
-    var tokenValue="1111";
-    var formElement = document.querySelector("body > div.content > div > div.gift-box > ul > form");
-    // 检查是否找到了form元素
-    if (formElement) {
-        // 获取action的值
-        var actionValue = formElement.getAttribute("action");
+//     // 获取包含token的form元素
+//     var tokenValue="1111";
+//     var formElement = document.querySelector("body > div.content > div > div.gift-box > ul > form");
+//     // 检查是否找到了form元素
+//     if (formElement) {
+//         // 获取action的值
+//         var actionValue = formElement.getAttribute("action");
 
-        // 使用正则表达式提取token的值
-        var match = actionValue.match(/token=(\d+)/);
+//         // 使用正则表达式提取token的值
+//         var match = actionValue.match(/token=(\d+)/);
 
-        // 检查是否匹配到token
-        if (match) {
-            tokenValue = match[1];
-            // 打印token的值
-            //console.log("Token值: " + tokenValue);
-        } else {
-            console.log("未在action中找到token");
-        }
-    } else {
-        console.log("未找到form元素");
-    }
+//         // 检查是否匹配到token
+//         if (match) {
+//             tokenValue = match[1];
+//             // 打印token的值
+//             //console.log("Token值: " + tokenValue);
+//         } else {
+//             console.log("未在action中找到token");
+//         }
+//     } else {
+//         console.log("未找到form元素");
+//     }
 
     // 为发送按钮添加点击事件监听器
     sendButton.addEventListener('click', async function() {
