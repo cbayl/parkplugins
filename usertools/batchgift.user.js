@@ -6,7 +6,7 @@
 // @name:zh-SG   个人工具-批量赠送礼物
 // @name:zh-TW   個人工具-批量贈送禮物
 // @namespace    https://github.com/cbayl/
-// @version      0.1
+// @version      0.1.1
 // @description  Batch send gifts in 6park bbs and forums
 // @description:zh  通过此工具，您可以轻松批量赠送金币礼物，为您的留园体验增添更多便利。
 // @description:zh-CN  一个用于在留园批量赠送金币礼物的用户工具。通过此工具，您可以轻松批量赠送金币礼物，为您的留园体验增添更多便利。
@@ -26,6 +26,7 @@
 
 (function() {
     'use strict';
+    const DELAY_TIME=3;//发送间隔(秒)
     console.log("个人工具-赠送礼物 by lyabc");
     console.log("支持用名字来赠送礼物")
     console.log("支持批量赠送，用中英文的逗号，中文顿号，或者是空格分隔")
@@ -33,6 +34,10 @@
     console.log("如果想要静默发送，可以在末尾添加666")
 
     let defaultPageURL = location.href;
+    function delay(s) {
+        return new Promise(resolve => setTimeout(resolve, s*1000));
+    }
+
 
     function searchGiftOnline(giftName) {
         // 获取当前页面的URL
@@ -182,28 +187,6 @@
 
     // 获取剩余余额
     var account_balance=document.querySelector("body > div.content > div > div:nth-child(1) > div.gift-gold-num > span:nth-child(3)").textContent
-//     // 获取包含token的form元素
-//     var tokenValue="1111";
-//     var formElement = document.querySelector("body > div.content > div > div.gift-box > ul > form");
-//     // 检查是否找到了form元素
-//     if (formElement) {
-//         // 获取action的值
-//         var actionValue = formElement.getAttribute("action");
-
-//         // 使用正则表达式提取token的值
-//         var match = actionValue.match(/token=(\d+)/);
-
-//         // 检查是否匹配到token
-//         if (match) {
-//             tokenValue = match[1];
-//             // 打印token的值
-//             //console.log("Token值: " + tokenValue);
-//         } else {
-//             console.log("未在action中找到token");
-//         }
-//     } else {
-//         console.log("未找到form元素");
-//     }
 
     // 为发送按钮添加点击事件监听器
     sendButton.addEventListener('click', async function() {
@@ -229,6 +212,7 @@
                     console.log("666");
                 }
                 await sendGift(searchResult.gift.id,account_balance,searchResult.category,searchResult.token);
+                delay(DELAY_TIME);
                 console.log("发送礼物："+ searchResult.gift.name);
                 account_balance=account_balance-searchResult.gift.price;
                 console.log("账户余额："+ account_balance);
@@ -239,7 +223,7 @@
 
         }
         if(inputBox.value.includes("666")){
-              alert("礼物发送完毕："+sentGift);
-         }
+            alert("礼物发送完毕："+sentGift);
+        }
     });
 })();
