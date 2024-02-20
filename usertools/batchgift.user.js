@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         [DEVELOPING] UserTool-BatchGift
+// @name         UserTool-BatchGift
 // @name:zh      个人工具-批量赠送礼物
 // @name:zh-CN   个人工具-批量赠送礼物
 // @name:zh-HK   個人工具-批量贈送禮物
