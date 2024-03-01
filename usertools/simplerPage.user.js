@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name         页面简化工具
 // @namespace    https://github.com/cbayl/parkplugins
-// @version      0.1
+// @version      0.11
 // @description  可选择性的隐藏点赞回复，金币回复，或者是被拉黑的人的主贴跟回复
 // @author       lyabcv@gmail.com
-// @match        https://www.cool18.com/bbs6/*
+// @match        https://www.cool18.com/b*/*
+// @match        https://club.6parkbbs.com/*
+// @match        https://web.6parkbbs.com/*
 // @grant        GM_xmlhttpRequest
 // @grant        GM_addStyle
 // @downloadURL  https://github.com/cbayl/parkplugins/raw/main/usertools/simplerPage.user.js
@@ -93,11 +95,13 @@
 
 
     // 获取包含所有 li 元素的父元素
-    var dList = document.querySelector("#d_list") ||
-        document.querySelector("body > table:nth-child(7) > tbody > tr > td");
+    var dList = document.querySelector("#d_list") || //首页
+        document.querySelector("body > table:nth-child(7) > tbody > tr > td")|| //帖子页面
+        document.querySelector("body > div.cen-main > div.c-r-l > div.repl-body"); //自建论坛帖子页面
 
     // 获取所有 li 元素
     var liElements = dList.querySelectorAll("li");
+    if(liElements.length==0) liElements = dList.querySelectorAll("div > div"); // 自建论坛
 
     // 定义隐藏列表项的函数
     function toggleUpVote() {
@@ -131,21 +135,30 @@
     function toggleHideBlacklisted() {
         // 获取包含所有 li 元素的父元素
         var dList = document.querySelector("#d_list") ||
-            document.querySelector("body > table:nth-child(7) > tbody > tr > td");
-
+            document.querySelector("body > table:nth-child(7) > tbody > tr > td") ||
+            document.querySelector("body > div.cen-main > div.c-r-l > div.repl-body"); //自建论坛帖子页面
+// debugger;
         // 获取所有 li 元素
-        const liElements = dList.querySelectorAll("li");
+        var liElements = dList.querySelectorAll("li");
+        if(liElements.length==0) liElements = dList.querySelectorAll("div > div"); // 自建论坛
 
         // 遍历所有 li 元素
         liElements.forEach(function(liElement) {
             // 检查是否包含 a 子元素
             var aElement = liElement.querySelector("a");
+            // debugger;
             if (aElement) {
                 // 获取 a 元素的下一个兄弟节点
                 var nextSibling = aElement.nextSibling;
                 // 检查下一个兄弟节点是否是文本节点，并且包含在要隐藏的用户名列表中
                 if (nextSibling.nodeType === Node.TEXT_NODE) {
-                    var textContent = nextSibling.textContent.trim();
+                    var textContent="";
+                     if (nextSibling.nextSibling.nodeType === Node.ELEMENT_NODE && nextSibling.nextSibling.nodeName === "A") {
+                        textContent=nextSibling.nextSibling.textContent
+                    } else {
+
+                    textContent = nextSibling.textContent.trim();
+                    }
                     // 检查用户名是否存在于文本内容中
                     if (blacklistArray.some(function(name) {
                         return textContent.includes(name);
@@ -184,8 +197,12 @@
         var blacklistPageURL = '';
 
         // 获取黑名单页面的 URL
-        const friendsElement = document.querySelector("#pub_info > a:nth-child(7)") ||
-              document.querySelector("#head_left > a:nth-child(4)");
+        // const friendsElement = document.querySelector("#pub_info > a:nth-child(7)") ||
+        //       document.querySelector("#head_left > a:nth-child(4)")||
+        //       document.querySelector("#pub_info > a:nth-child(6)");
+        const friendsElementSelectors = ["#pub_info > a:nth-child(7)", "#head_left > a:nth-child(4)", "#pub_info > a:nth-child(6)"];
+        const friendsElement = friendsElementSelectors.map(selector => document.querySelector(selector)).find(element => element && element.textContent.trim() === "朋友圈");
+
         if (friendsElement) {
             blacklistPageURL = friendsElement.href;
         } else {
